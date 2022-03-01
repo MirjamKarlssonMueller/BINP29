@@ -83,9 +83,11 @@ python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
 <p>The resulting fasta file contains 1681 reads, as opposed to the 2243 of the original. This high percentage is due to how the GC-content border was set. Since it is quite high, it is likely that more bird scaffolds are included but it also guarantees a majority of the Haemoproteus scaffolds to be included.<p>
 
 <p> As a next step the outfile.fasta was also run through GeneMark for a gene prediction.<p>
+  
  ```shell
  nohup gmes_petap.pl --ES --sequence outfile.fasta & 
- ```                             
+ ``` 
+  
 The resulting gtf file and the fasta produced earlier, together should create a new fasta file, using gffParse.pl (from the BINP29 courseserver). However, first we run into a issue with the headers of the fasta and the headers of the gtf file.                              
 ```shell
 head -1 Haemoproteus.gtf
@@ -93,8 +95,44 @@ scaffold01477, GC: 24.2, Length: 3790	GeneMark.hmm	exon	21	1216	0+	.	gene_id "1_
 head -1 Haemoproteus_genome_filtered.fasta
 >scaffold00001, GC: 27.63, Length: 116706
 ```
-The fasta file recognizes spaces as columnseparators, whereas the gtf file considers tabs columnseperators. It therefore tries to match only the scaffold plus its number with the whole string. The solution is to remove the annotations from the id name in the gtf file.
+  
+The fasta file recognizes spaces as columnseparators, whereas the gtf file considers tabs columnseperators. It therefore tries to match only the scaffold plus its number with the whole string. The solution is to remove the annotations from the id name in the gtf file. Furthermore, the commas in the fasta file headers are removed.
+  
 ```shell
-at Haemoproteus.gtf | cut -f1 | cut -d"," -f1 > Haemoproteus_altered.gtf
+cat Haemoproteus.gtf | sed "s/,.*\tGeneMark.hmm/\tGeneMark.hmm/1" > Haemoproteus_altered.gtf
+cat Haemoproteus_genome_filtered.fasta | tr -d ",">Haemoproteus_genome2_filtered.fasta
 ```
+  
+ So that the first line is now.
+  
+```shell
+scaffold01477	GeneMark.hmm	exon	21	1216	0	+	.	gene_id "1_g"; transcript_id "1_t";
+```
+  
+Now we can run the gffParse.pl.
+
+```shell
+gffParse.pl -c -p -F -i Haemoproteus_genome2_filtered.fasta -g Haemoproteus_altered.gtf 
+```
+  
+To further exclude scaffolds with bird origin, we use blastp (v. 2.11.0+) and the SwissProt database.
+
+```shell
+blastp -query  ../gffParse_output/gffParse.faa -db SwissProt
+```
+ 
+From the output we filter out all the results that have their most significant hit in an avian species. For this we require the information from the NCBI taxonomy file (found on ftp://ftp.ebi.ac.uk/pub/databases/taxonomy/taxonomy.dat) and the Swissprot taxonomy file (ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz). In our case these files are already on the server, so instead we set up a symlink to them.
+
+```shell
+ln -s /resources/binp29/Data/malaria/taxonomy.dat taxonomy.dat
+ln -s /resources/binp29/Data/malaria/uniprot_sprot.dat uniprot_sprot.dat
+```
+
+  
+  
+  
+  
+  
+  
+  
   
