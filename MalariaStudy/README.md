@@ -87,4 +87,14 @@ python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
  nohup gmes_petap.pl --ES --sequence outfile.fasta & 
  ```                             
 The resulting gtf file and the fasta produced earlier, together should create a new fasta file, using gffParse.pl (from the BINP29 courseserver). However, first we run into a issue with the headers of the fasta and the headers of the gtf file.                              
-                    
+```shell
+head -1 Haemoproteus.gtf
+scaffold01477, GC: 24.2, Length: 3790	GeneMark.hmm	exon	21	1216	0+	.	gene_id "1_g"; transcript_id "1_t";
+head -1 Haemoproteus_genome_filtered.fasta
+>scaffold00001, GC: 27.63, Length: 116706
+```
+The fasta file recognizes spaces as columnseparators, whereas the gtf file considers tabs columnseperators. It therefore tries to match only the scaffold plus its number with the whole string. The solution is to remove the annotations from the id name in the gtf file.
+```shell
+at Haemoproteus.gtf | cut -f1 | cut -d"," -f1 > Haemoproteus_altered.gtf
+```
+  
