@@ -74,6 +74,14 @@ with open(outfile, 'w') as out:
             #check gc content:
             gc=GC(fasta[ids])
             if gc<=gc_content:
-                out.write('{}, GC: {}, Length: {}\n{}'.format(ids, gc, len(fasta[ids]), fasta[ids])) #write the output file.
+                out.write('{}, GC: {}, Length: {}\n{}\n'.format(ids, gc, len(fasta[ids]), fasta[ids])) #write the output file.
 ```
-
+The minimum scaffold length of 3000 was a given, the GC-content was chosen based on the lecture material. Run with
+```shell
+python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
+```
+ The resulting fasta file contains 1681 reads, as opposed to the 2243 of the original. This high percentage is due to how the GC-content border was set. Since it is quite high, it is likely that more bird scaffolds are included but it also guarantees a majority of the Haemoproteus scaffolds to be included.
+                              
+                              
+                              
+                    
