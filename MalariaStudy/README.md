@@ -79,7 +79,18 @@ python BlastParser.py Blast/Ht_blastout.txt gffParse_output/gffParse.faa genome_
 ```shell
 nohup gmes_petap.pl --ES --sequence ../5_remove_Birds/Ht_without_birdscaff.fasta 
 ```
-Next we run the gffParse for all the genomes and their corresponding gtf files in folder 7_gffParse_All
+<p>To answer a few questions on size of the genomes, gene size and gc contents for all these organisms, we use bash. Please see the project report for the result table. <p>
+```shell
+#Genome size for all genome files.
+for file in *.genome; do (echo $(grep -v "^>" $file | tr -d "\n" | wc -c)); done
+#Number of genes for all gtf files.
+for file in *.gtf; do cut -f9 $file | cut -d \" -f2 | sort | uniq | wc -l; done
+#GC content for all genome files. Results for genome size, and counting G's and C's
+for file in *.genome; do grep -v "^>" $file | tr -d "\n" | tr -d "N" | tr -d "A" | tr -d "T"| wc -c; done 
+```
+  
+  
+<p>Next we run the gffParse for all the genomes and their corresponding gtf files in folder 7_gffParse_All.<p>
 ```shell
 gffParse.pl -c -p -i ../0_Data/Plasmodium_berghei.genome -g ../1_GenePrediction_All/plasmodium_berghei.gtf -b Pb
 gffParse.pl -c -p -i ../0_Data/Plasmodium_cynomolgi.genome -g ../1_GenePrediction_All/plasmodium_cynomolgi.gtf -b Pc
