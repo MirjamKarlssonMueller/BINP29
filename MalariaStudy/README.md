@@ -79,8 +79,16 @@ python BlastParser.py Blast/Ht_blastout.txt gffParse_output/gffParse.faa genome_
 ```shell
 nohup gmes_petap.pl --ES --sequence ../5_remove_Birds/Ht_without_birdscaff.fasta 
 ```
-  
- 
+Next we run the gffParse for all the genomes and their corresponding gtf files in folder 7_gffParse_All
+```shell
+gffParse.pl -c -p -i ../0_Data/Plasmodium_berghei.genome -g ../1_GenePrediction_All/plasmodium_berghei.gtf -b Pb
+gffParse.pl -c -p -i ../0_Data/Plasmodium_cynomolgi.genome -g ../1_GenePrediction_All/plasmodium_cynomolgi.gtf -b Pc
+gffParse.pl -c -p -i ../0_Data/Plasmodium_faciparum.genome -g ../1_GenePrediction_All/plasmodium_faciparum.gtf -b Pf
+gffParse.pl -c -p -i ../0_Data/Plasmodium_knowlesi.genome -g ../1_GenePrediction_All/knowlesi.gtf -b Pk
+gffParse.pl -c -p -i ../0_Data/Plasmodium_vivax.genome -g ../1_GenePrediction_All/plasmodium_vivax.gtf -b Pv
+gffParse.pl -c -p -i ../0_Data/Plasmodium_yoelii.genome -g ../1_GenePrediction_All/plasmodium_yoelii.gtf -b Py
+gffParse.pl -c -p -i ../0_Data/Toxoplasma_gondii.genome -g ../1_GenePrediction_All/Tg.gff -b Tg
+```
   
   
   
