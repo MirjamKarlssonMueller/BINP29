@@ -127,7 +127,12 @@ From the output we filter out all the results that have their most significant h
 ln -s /resources/binp29/Data/malaria/taxonomy.dat taxonomy.dat
 ln -s /resources/binp29/Data/malaria/uniprot_sprot.dat uniprot_sprot.dat
 ```
-
+  
+<p> The scaffolds are identified with the script BlastParser.py run in the command line with <p>
+  
+```shell
+python BlastParser.py Blast/Ht_blastout.txt gffParse_output/gffParse.faa genome_files/Haemoproteus_genome2_filtered.fasta taxonomy.dat uniprot_sprot.dat Ht_without_birdscaff.fasta
+```
   
   
   
