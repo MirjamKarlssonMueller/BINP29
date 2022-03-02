@@ -17,7 +17,7 @@ nohup gmes_petap.pl --ES --sequence plasmodium_vivax.genome &
 The minimum scaffold length of 3000 was a given, the GC-content was chosen based on the lecture material. Run with<p>
   
 ```shell
-python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
+python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 Haemoproteus_genome_filtered.fasta
 ```
   
 <p>The resulting fasta file contains 1681 reads, as opposed to the 2243 of the original. This high percentage is due to how the GC-content border was set. Since it is quite high, it is likely that more bird scaffolds are included but it also guarantees a majority of the Haemoproteus scaffolds to be included.<p>
@@ -25,7 +25,7 @@ python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
 <p> As a next step the outfile.fasta was also run through GeneMark for a gene prediction.<p>
   
  ```shell
- nohup gmes_petap.pl --ES --sequence outfile.fasta & 
+ nohup gmes_petap.pl --ES --sequence Haemoproteus_genome_filtered.fasta & 
  ``` 
   
 The resulting gtf file and the fasta produced earlier, together should create a new fasta file, using gffParse.pl (from the BINP29 courseserver). However, first we run into a issue with the headers of the fasta and the headers of the gtf file.                              
