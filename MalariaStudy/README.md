@@ -79,7 +79,18 @@ python BlastParser.py Blast/Ht_blastout.txt gffParse_output/gffParse.faa genome_
 ```shell
 nohup gmes_petap.pl --ES --sequence ../5_remove_Birds/Ht_without_birdscaff.fasta 
 ```
+<p> The resulting gtf file needs to be also run through gffParse to be used in proteinortho later on.<p>
+
+```shell
+#in 6_Pred_Haemoproteus_without_bird needs to be altered again, because of the different head.
+cat Ht_pred_without_birds.gtf | sed "s/ GC.*\tGeneMark.hmm/\tGeneMark.hmm/1" > Ht_pred_without_birds_altered.gtf
+
+#in 7_gffParse_All
+gffParse.pl -c -p -i ../5_Remove_Birds/Ht_without_birdscaff.fasta -g ../6_Pred_Haemoproteus_without_bird/Ht_pred_without_birds_altered.gtf -b Ht
+```
+  
 <p>To answer a few questions on size of the genomes, gene size and gc contents for all these organisms, we use bash. Please see the project report for the result table. <p>
+
 ```shell
 #Genome size for all genome files.
 for file in *.genome; do (echo $(grep -v "^>" $file | tr -d "\n" | wc -c)); done
@@ -89,8 +100,8 @@ for file in *.gtf; do cut -f9 $file | cut -d \" -f2 | sort | uniq | wc -l; done
 for file in *.genome; do grep -v "^>" $file | tr -d "\n" | tr -d "N" | tr -d "A" | tr -d "T"| wc -c; done 
 ```
   
-  
 <p>Next we run the gffParse for all the genomes and their corresponding gtf files in folder 7_gffParse_All.<p>
+  
 ```shell
 gffParse.pl -c -p -i ../0_Data/Plasmodium_berghei.genome -g ../1_GenePrediction_All/plasmodium_berghei.gtf -b Pb
 gffParse.pl -c -p -i ../0_Data/Plasmodium_cynomolgi.genome -g ../1_GenePrediction_All/plasmodium_cynomolgi.gtf -b Pc
@@ -100,7 +111,12 @@ gffParse.pl -c -p -i ../0_Data/Plasmodium_vivax.genome -g ../1_GenePrediction_Al
 gffParse.pl -c -p -i ../0_Data/Plasmodium_yoelii.genome -g ../1_GenePrediction_All/plasmodium_yoelii.gtf -b Py
 gffParse.pl -c -p -i ../0_Data/Toxoplasma_gondii.genome -g ../1_GenePrediction_All/Tg.gff -b Tg
 ```
-  
+<p> proteinortho can be installed over conda. The version we are using is 6.0.33. <p>
+
+```shell
+nohup proteinortho6.pl ../7_gffParse_All/{Ht,Pb,Pc,Pf,Pk,Pv,Py,Tg}.faa &
+```
+
   
   
   
