@@ -13,73 +13,13 @@ nohup gmes_petap.pl --ES --sequence plasmodium_vivax.genome &
 ## 2. Processing of Haemoproteus tartakovskyi data
 <p>The sequenced genome of Haemoproteus tartakovskyi in scaffolds could also be found on the server. But since malaria is a parasite, the reads do not only contain the parasites dna but also the hosts. We thus needed to filter the reads. This was done by GC content, as Haemoproteus tartakovskyi has a lower GC content (19-42%) compared to the host zebrafinch (41%). Furthermore, all reads shorter than 3000 nucleotides were sorted out as well.<p>
 
-<p> This was done with the python script Scaffold.py. <p>
+<p> This was done with the python script Scaffold.py.
+The minimum scaffold length of 3000 was a given, the GC-content was chosen based on the lecture material. Run with<p>
   
-```python
-import sys
-"""
-run in console with: python Scaffold.py input_file min_scaffold_size gc_content output_file
-
-Input and output files are fastas, the scaffold and gc contents need to be numbers, whereas the gc content furthermore 
-needs to be a percentage, i.e. a number between 1-100.
-"""
-
-#inputs. 
-fastafile=sys.argv[1]    
-min_size=int(sys.argv[2])
-gc_content=float(int(sys.argv[3]))
-outfile=sys.argv[4]
-    
-
-def GC(sequence):
-    """
-    Returns GC content of a nucleotide sequence. 
-    Parameters
-    ----------
-    sequence : string
-        string of nucleotides.
-
-    Returns
-    -------
-    float
-        Percentage of nucleotides being G or C.
-
-    """
-    gc=sequence.count("C")+sequence.count("G")
-    total=gc+sequence.count("A")+sequence.count("T")
-    return round(gc/total *100, 2)
-
-with open(fastafile, 'r') as fasta:
-    sequences=[]
-    current_seq=""
-    headers=[]
-    for line in fasta:
-        if line.startswith(">"):
-            headers.append(line.strip("\n").split(" ")[0])
-            if len(current_seq)>0:
-                sequences.append(current_seq)
-                current_seq=""
-        else:
-            current_seq=current_seq+line.strip("\n").upper()
-            
-fasta=dict()
-for i in range(0,len(headers)-1):
-    fasta[headers[i]]=sequences[i]
-    
-            
-with open(outfile, 'w') as out:
-    for ids in fasta:
-        #Check size:
-        if len(fasta[ids])>=min_size:
-            #check gc content:
-            gc=GC(fasta[ids])
-            if gc<=gc_content:
-                out.write('{}, GC: {}, Length: {}\n{}\n'.format(ids, gc, len(fasta[ids]), fasta[ids])) #write the output file.
-```
-The minimum scaffold length of 3000 was a given, the GC-content was chosen based on the lecture material. Run with
 ```shell
 python Scaffold.py Haemoproteus_tartakovskyi.genome 3000 35 outfile.fasta
 ```
+  
 <p>The resulting fasta file contains 1681 reads, as opposed to the 2243 of the original. This high percentage is due to how the GC-content border was set. Since it is quite high, it is likely that more bird scaffolds are included but it also guarantees a majority of the Haemoproteus scaffolds to be included.<p>
 
 <p> As a next step the outfile.fasta was also run through GeneMark for a gene prediction.<p>
