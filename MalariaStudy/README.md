@@ -117,7 +117,16 @@ gffParse.pl -c -p -i ../0_Data/Toxoplasma_gondii.genome -g ../1_GenePrediction_A
 nohup proteinortho6.pl ../7_gffParse_All/{Ht,Pb,Pc,Pf,Pk,Pv,Py,Tg}.faa &
 ```
 
+<p> Busco can also be installed over conda. Version used is 5.3.0. <p>
+```shell
+busco -f -i ../7_gffParse_All/Pb.faa -o Pb -m prot -l apicomplexa
+#and likewise for the other species.
+```
+This produces a folder for each species with the outputs. Now we would like to know how many of the BUSCOs are found in all eight organisms. For this we need to do some filehandling. We require one big file containing the unique ids of all BUSCO results for all the eight runs. Then we can use uniq -c and grep 8 to retrieve all the results that show up 8 times.
+
+```shell
   
+```
   
   
   
