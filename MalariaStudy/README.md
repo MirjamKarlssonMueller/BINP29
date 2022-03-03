@@ -122,12 +122,20 @@ nohup proteinortho6.pl ../7_gffParse_All/{Ht,Pb,Pc,Pf,Pk,Pv,Py,Tg}.faa &
 busco -f -i ../7_gffParse_All/Pb.faa -o Pb -m prot -l apicomplexa
 #and likewise for the other species.
 ```
-This produces a folder for each species with the outputs. Now we would like to know how many of the BUSCOs are found in all eight organisms. For this we need to do some filehandling. We require one big file containing the unique ids of all BUSCO results for all the eight runs. Then we can use uniq -c and grep 8 to retrieve all the results that show up 8 times.
+This produces a folder for each species with the outputs. Now we would like to know how many of the BUSCOs are found in all eight organisms. For this we need to do some filehandling. We require one big file containing the unique ids of all BUSCO results for all the eight runs. We only use the BUSCO ids of completed or duplicated BUSCOs. Then we can use uniq -c and grep 8 to retrieve all the results that show up 8 times. 
 
 ```shell
-  
+#In Pc folder, same for other species, in their corresponding folders. 
+cat run_apicomplexa_odb10/full_table.tsv | grep -v "^#" | awk 'BEGIN{FS="\t"}; {if ($2=="Complete" || $2=="Duplicated") print $1 }' | sort | uniq > ../Pc_uniq_id.txt
+#Concatenate all the uniq sequences into one file. (In 9_BUSCO folder)
+cat *.txt >concatenate_uniq.txt
+#To see how many ids are in all 8 files. (188)
+cat concatenate_uniq.txt |sort | uniq -c | awk 'BEGINS{FS="\t"}; {if ($1==8) print $2}' | wc -l
+#To see how many are in 7. (208)
+cat {Pb,Pc,Pf,Pk,Pv,Py,Ht}_uniq_id.txt >concat_without_Tg.txt
+cat concat_without_Tg.txt |sort | uniq -c | awk 'BEGINS{FS="\t"}; {if ($1==7) print $2}' | wc -l
 ```
-  
+This results indicates that Toxoplasma is not actually a usuable outgroup for a phylogenetic analysis.
   
   
   
