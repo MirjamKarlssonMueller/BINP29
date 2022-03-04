@@ -135,7 +135,14 @@ cat concatenate_uniq.txt |sort | uniq -c | awk 'BEGINS{FS="\t"}; {if ($1==8) pri
 cat {Pb,Pc,Pf,Pk,Pv,Py,Ht}_uniq_id.txt >concat_without_Tg.txt
 cat concat_without_Tg.txt |sort | uniq -c | awk 'BEGINS{FS="\t"}; {if ($1==7) print $2}' | wc -l
 ```
-This results indicates that Toxoplasma is not actually a usuable outgroup for a phylogenetic analysis.
+<p>The Problem with Toxoplasma is, that it has many of its BUSCOs as duplicates. Which we need to keep in mind for the next step. We still want to use it as an outgroup, but to do this we will have to choose which strand to use when having a duplicate in Toxoplasma. <p>
+
+<p> The next step is to take the complete BUSCOs, found in all eight species, and make a fasta file for each, containing the protein sequences corresponding to each species. For this all BUSCOs with COMPLETE are used, except for Toxoplasma, where DUPLICATED is allowed as well. In the case of a duplicate Toxoplasma result, the last one is used. For this step we use BUSCOparser.py. It is executed with <p>
   
-  
+```shell
+python BUSCOparser.py 8_full_tsv/ faa_files/ output_fastas/
+```
+<p>Note that the 8_full_tsv directory contains the tsv tables for all 8 species, containing the BUSCO results, the faa_files directory contains the .faa files created with the gffParser earlier for each species, and the output_fastas directory is where   
+the output fasta files are stored for each BUSCO. <p>
+
   
