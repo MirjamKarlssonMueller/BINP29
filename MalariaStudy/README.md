@@ -158,3 +158,6 @@ for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -
   cat RAxML_result.* > all_trees.tre #make concatenated tree
   phylip consense
  ```
+This is the resulting tree:
+
+![](/malaria_tree.png)
