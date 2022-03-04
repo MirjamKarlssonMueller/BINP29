@@ -152,4 +152,9 @@ for file in 10_BUSCO_to_fasta/output_fastas/*.fasta; do new=$(echo ${file##*/});
 for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -s ${new}_aligned.faa -n ${new##*/}.tre -o Tg -m PROTGAMMABLOSUM62 -p 12345; done
 ```
   
-<p> Having a tree for each protein, we now want to merge them into one tree using phylip.
+<p> Having a tree for each protein, we now want to merge them into one tree using phylip consense (v. 3.6.9). Phylip is an older program, it prompts you for input. As input file we use a concatenated file of all tree files created in the previous step. And outgroup is species 8 (Because alphabetically Tg comes last). <p>
+
+```shell
+  cat RAxML_result.* > all_trees.tre #make concatenated tree
+  phylip consense
+ ```
