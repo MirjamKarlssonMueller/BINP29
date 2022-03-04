@@ -152,7 +152,7 @@ for file in 10_BUSCO_to_fasta/output_fastas/*.fasta; do new=$(echo ${file##*/});
 for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -s ${new}_aligned.faa -n ${new##*/}.tre -o Tg -m PROTGAMMABLOSUM62 -p 12345; done
 ```
   
-<p> Having a tree for each protein, we now want to merge them into one tree using phylip consense (v. 3.6.9). Phylip is an older program, it prompts you for input. As input file we use a concatenated file of all tree files created in the previous step. And outgroup is species 8 (Because alphabetically Tg comes last). <p>
+<p> Having a tree for each protein, we now want to merge them into one tree using phylip consense (v. 3.6.9). Phylip is an older program, it prompts you for input. As input file we use a concatenated file of all tree files created in the previous step. And outgroup is species 8 (Because alphabetically Tg comes last). All the tree files, before and after consensus, are saved in the folder 12_Trees.<p>
 
 ```shell
   cat RAxML_result.* > all_trees.tre #make concatenated tree
@@ -162,4 +162,16 @@ This is the resulting tree:
 
 ![](malaria_tree.png)
 
- Because we are curious, we now concatenate all the Busco protein fastas into one big Busco protein fasta, which still contains one sequence per species, but basically a merged sequence of all the protein sequences. We use Superparser.py for this.
+ Because we are curious, we now concatenate all the Busco protein fastas into one big Busco protein fasta, which still contains one sequence per species, but basically a merged sequence of all the protein sequences. We use Superparser.py for this. Executed in folder 13_SuperTree.
+
+```shell
+ python Superparser.py busco_fastas/ big_fasta.faa
+```
+  
+We then proceed to align the sequences with clustalo, and make a tree with raxml.  
+
+```shell
+clustalo -i big_fasta.faa -o big_fasta_aligned.faa -v
+raxmlHPC -s big_fasta_aligned.faa -n big_fasta.tre -o Tg -m PROTGAMMABLOSUM62 -p 12345
+```
+This is the resulting tree:
