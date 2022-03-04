@@ -161,3 +161,5 @@ for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -
 This is the resulting tree:
 
 ![](malaria_tree.png)
+
+ Because we are curious, we now concatenate all the Busco protein fastas into one big Busco protein fasta, which still contains one sequence per species, but basically a merged sequence of all the protein sequences. We use Superparser.py for this.
