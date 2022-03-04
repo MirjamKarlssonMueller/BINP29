@@ -143,6 +143,13 @@ cat concat_without_Tg.txt |sort | uniq -c | awk 'BEGINS{FS="\t"}; {if ($1==7) pr
 python BUSCOparser.py 8_full_tsv/ faa_files/ output_fastas/
 ```
 <p>Note that the 8_full_tsv directory contains the tsv tables for all 8 species, containing the BUSCO results, the faa_files directory contains the .faa files created with the gffParser earlier for each species, and the output_fastas directory is where   
-the output fasta files are stored for each BUSCO. <p>
+the output fasta files are stored for each BUSCO. There is a total of 175 BUSCO files. <p>
 
+<p> Having a fasta file for each BUSCO, we can align the sequences in each of them. For this we first run clustalo (v 1.2.4) and then raxml (v 8.2.12). Both are installed over conda. <p>
   
+```shell
+for file in 10_BUSCO_to_fasta/output_fastas/*.fasta; do new=$(echo ${file##*/}); clustalo -i $file -o 11_Alignments/${new%.fasta}_aligned.faa -v; done
+for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -s ${new}_aligned.faa -n ${new##*/}.tre -o Tg -m PROTGAMMABLOSUM62 -p 12345; done
+```
+  
+<p> Having a tree for each protein, we now want to merge them into one tree using phylip.
