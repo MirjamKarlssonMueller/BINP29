@@ -174,5 +174,8 @@ We then proceed to align the sequences with clustalo, and make a tree with raxml
 clustalo -i big_fasta.faa -o big_fasta_aligned.faa -v
 raxmlHPC -s big_fasta_aligned.faa -n big_fasta.tre -o Tg -m PROTGAMMABLOSUM62 -p 12345
 ```
-The second one kept running past the discussion of the results. So this is how far we get.
-However, we do have a fully functioning tree based on the consensus tree from all the proteins, which is what we expected based on previous results.
+This is the resulting tree:
+  
+![](Super_tree.png)
+  
+It agrees with the previous tree and both of them agree with the expectation.
