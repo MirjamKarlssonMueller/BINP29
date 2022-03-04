@@ -99,7 +99,7 @@ for file in *.gtf; do cut -f9 $file | cut -d \" -f2 | sort | uniq | wc -l; done
 #GC content for all genome files. Results for genome size, and counting G's and C's
 for file in *.genome; do grep -v "^>" $file | tr -d "\n" | tr -d "N" | tr -d "A" | tr -d "T"| wc -c; done 
 ```
-  
+## 3 Phylogenetic Trees   
 <p>Next we run the gffParse for all the genomes and their corresponding gtf files in folder 7_gffParse_All.<p>
   
 ```shell
