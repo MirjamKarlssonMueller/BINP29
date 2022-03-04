@@ -160,4 +160,4 @@ for file in 11_Alignments/*_aligned.faa; do new=$(echo ${file%%_a*}); raxmlHPC -
  ```
 This is the resulting tree:
 
-![](/malaria_tree.png)
+![](malaria_tree.png)
