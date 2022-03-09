@@ -1,5 +1,7 @@
 # Taxa Finder
 
+* In Progress *
+
 ## Necessary Files
 
 <p>Two files are necessary to run Taxa_Finder.py: nodes.dmp and names.dmp. They are part of a collection of files, taxdump, uploaded by ncbi as a part of their taxonomy database.
