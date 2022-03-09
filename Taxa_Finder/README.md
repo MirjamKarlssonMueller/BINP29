@@ -14,8 +14,13 @@ wget https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz
 Make sure to unzip the files regardless of how you download them, and then save them in the same directory as Taxa_finder.py.
 
 
-  
+## Commands
 
-## How to run
+<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query).
+  
+```shell
+  
+```
+
 
 ## Example of useage
