@@ -6,12 +6,13 @@ Date: 2022-03-09
 Author: Mirjam Karlsson-Müller
 
 Description: Finds the taxonomy lineage of one or more query /queries in the ncbi 
-taxonomy database.  
+taxonomy database. In case of two or more queries, can also return last common
+taxonomic node.
     
     
 List of functions:
     find_lineage: Finds lineage corresponding to a single query (string).
-
+    Find_common: Finds last common taxonomic node between queries.
     
 Procedure:
     1. Iterate through the queries, for each:
@@ -23,10 +24,12 @@ Procedure:
         ID etc until reaching the root of the taxonomic tree. The IDs are saved
         in a list.
         c. By going through the path list, the corresponding lineage is assembled
-        as a string, one ID at the time. If input parameter -s or --short is given,
+        into a string, one ID at the time. If input parameter -s or --short is given,
         then only nodes who are not marked as hidden by ncbi will be added to
-        lineage.
-    2. Lineage is printed in output file and/or console. The result is labelled with the query,
+        lineage. Additionally saved as dictionary together with query(-ies).
+    2. If -c is set, then the resultng dictionary containing queries and lineages
+    will be used to determine the last common node. And this is also added to the output.
+    3. Output is printed in output file and/or console. The result is labelled with the query,
     to be able to distinguish the lineage. All results get printed in the same file.
     
 
@@ -46,6 +49,9 @@ Usage:
     
     --print, -p:                    The lineage returned is printed to console.
     
+    --common, -c:                   If several queries given, returns the last common
+                                    taxonomic node between them.
+                                    
     Note that printing to console and printing to outfile are not mutually exclusive.
     Both can be done, or neither.
     
@@ -54,9 +60,9 @@ Possible Bugs:
     2. If neither -p or -o are given, the script runs, but no output is given.
     
 """
-#%%
-"Using argparse to explain flags."
+
 import argparse
+
 
 parser = argparse.ArgumentParser(prog='Taxa_Finder',
                                  usage='%(prog)s -i INPUT [-s] [-p] -[o] [OUTPUT] ',
@@ -69,14 +75,51 @@ parser.add_argument('--short', '-s', action='store_true',
                     help='The lineage returned will only include entries not flagged as hidden by ncbi.')
 parser.add_argument('--print', '-p', action='store_true',
                     help='The lineage is printed to console.')
+parser.add_argument('--common', '-c', action='store_true',
+                    help='Additionally returns the last common taxonomic node of the queries lineage.')
+
 
 args=parser.parse_args()
 
 query=args.input
 outfile=args.out
+    
+    
+    
+#%%    
+def Find_common(taxonomy):
+    """
+    Finds the last common node in the taxonomic tree for all input queries.
+
+    Parameters
+    ----------
+    taxonomy : dictionary
+        contains queries as keys and lineage as values (list).
+
+    Returns
+    -------
+    node: string
+
+    """
+    #Change values of taxonomy dictionary to sets
+    taxonomy_set=dict()
+    for key in taxonomy:
+        taxonomy_set[key]=set(taxonomy[key])
+    
+    values=list(taxonomy_set.values())
+    #intersection between sets allows unknown number of queries.
+    intersection=list(set.intersection(*values))
+    #But it changes the order, so we need to go through one query to find "last"
+    for element in taxonomy[list(taxonomy.keys())[0]]:
+        #If the element is in the intersection, we update last node
+        if element in intersection:
+            last_node=element
+        #If it is not, then the previous element was the last node.
+        else:
+            return(last_node)            
+            
 
 
-#%%
 def find_lineage(query):
     """
     Finds the taxonomic lineage corresponding to a query.
@@ -98,7 +141,7 @@ def find_lineage(query):
 
     with open("names.dmp", 'r') as names:
         for entry in names:
-            #find query
+            #find query:
             any_name=entry.split("\t|\t")[1]
             if any_name.upper().strip(" ")==query.upper().strip(" "):
                 query_ID =entry.split("\t|\t")[0].strip(" ")
@@ -149,11 +192,10 @@ def find_lineage(query):
                 #If we are not at the root, append parent ID to path.
                 path.append(parent_ID)
                 
-    "c. Assemble Output."
+    "3. Assemble Output."
 
     lineage=""
     #right now the path goes from query back to root, we want the output reversed.
-
     for ID in reversed(path):
         #check if we want shortened path or the entire path:
         if args.short:
@@ -175,16 +217,27 @@ def find_lineage(query):
     return(lineage)        
 
 #%%
-
-#Checking if input format is right.
+#Initialize taxonomy dictioanry needed for common node.
+taxonomy=dict()
 if isinstance(query, list)==True:
     output=""
     for i in query:
         lineage=find_lineage(i)
+        #Also save lineage together with query in dictionary.
+        taxonomy[i]=lineage.split(",")
         output+="Lineage for query {}: {}\n\n".format(i,lineage)
 else:
     print("Query format not correct, use strings enclosed by "" or '', queries seperated by space. ")
     quit()
+
+#If -c is set, find last common node.
+if args.common:
+    #Needs to have two or more queries.
+    if len(query)==1:
+        print("Error finding common node: To find the last common taxonomic node between queries, two or more queries need to be given.\n")
+    else:
+        last_node=Find_common(taxonomy)
+        output+="Last common node between queries:"+last_node+"\n"
 
 "Output."
 #If output file is wished for:
@@ -193,5 +246,4 @@ if args.out:
         out.write(output)
 #If console output is wished for:           
 if args.print:
-    print(output)     
-            
+    print(output)  
