@@ -181,7 +181,7 @@ if isinstance(query, list)==True:
     output=""
     for i in query:
         lineage=find_lineage(i)
-        output+="Lineage for query {}: {}\n".format(i,lineage)
+        output+="Lineage for query {}: {}\n\n".format(i,lineage)
 else:
     print("Query format not correct, use strings enclosed by "" or '', queries seperated by space. ")
     quit()
