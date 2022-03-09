@@ -1,6 +1,6 @@
 # Taxa Finder
 
-* In Progress *
+*In Progress*
 
 ## Necessary Files
 
