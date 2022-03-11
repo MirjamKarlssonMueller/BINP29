@@ -18,11 +18,25 @@ Make sure to unzip the files regardless of how you download them, and then save 
 
 ## Commands
 
-<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query).
+<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query). 
   
-```shell
+### Run in command line:
   
 ```
+usage: Taxa_Finder -i INPUT [-s] [-p] -[o] [OUTPUT]
+Returns lineage of query based on ncbi`s taxonomy database.
+
+optional arguments:
+  -h, --help                                              show this help message and exit
+  --input INPUT [INPUT ...], -i INPUT [INPUT ...]         Query name, either single string, or severl strings seperated by space.
+  --out [OUT], -o [OUT]                                   Lineage printed in specified output file. Default: Lineage.txt
+  --short, -s                                             The lineage returned will only include entries not flagged as hidden by ncbi.
+  --print, -p                                             The lineage is printed to console.
+  --common, -c                                            Additionally returns the last common taxonomic node of the queries lineage. 
+```
+
+### Run in web interface:
+Currently only runs on a flask development server. 
 
 
 ## Example of useage
