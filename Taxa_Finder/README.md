@@ -42,7 +42,9 @@ Seeing the webinterface requires the user to install Flask on their local machin
 ```shell
 python Tax_v04_web.py
 ```
+The webinterface can process one or more queries, and gives the user the option, whether they want a shortened lineage and/or find the last common node (when having several queries). The results are output on the webpage, there is no output file option on the webinterface.
 
+![](Screenshots/Start_Page.png)
 
 
 ## Example of useage
@@ -51,10 +53,12 @@ python Tax_v04_web.py
 <p>Queries can be formal and informal names, though not all entries have their informal names registered, so to be on the safe side it is recommended to use the formal name of the query.</p>
 
 <p> One Query, result printed to screen: </p>  
+
 ```shell
 python Taxa_Finder.py -i Human -p                                
 Lineage for query Human: cellular organisms, Eukaryota, Opisthokonta, Metazoa, Eumetazoa, Bilateria, Deuterostomia, Chordata, Craniata, Vertebrata, Gnathostomata, Teleostomi, Euteleostomi, Sarcopterygii, Dipnotetrapodomorpha, Tetrapoda, Amniota, Mammalia, Theria, Eutheria, Boreoeutheria, Euarchontoglires, Primates, Haplorrhini, Simiiformes, Catarrhini, Hominoidea, Hominidae, Homininae, Homo.   
 ```
+
 <p> Two queries, result, including last common node and abbreviated lineage, printed to screen and output file (chosen as Cat_Human_Lineage.txt).
 
 ```shell
@@ -66,4 +70,10 @@ Last common node between queries: Eutheria
 Output file is saved in same directory as script is run. 
   
 ### Webinterface
-
+![](Screenshots/Start_Page_Human.png)
+ 
+![](Screenshots/Result_Page_Human.png)
+  
+![](Screenshots/Start_Page_Chicken_GreatTit_Seagull.png)
+  
+![](Screenshots/Result_Page_Chicken_GreatTit_Seagull.png)
