@@ -1,21 +1,73 @@
 #!/usr/bin/env python
+"""
+Title: Taxa_Finder_web.py
+Date: 2022-03-14
+Author: Mirjam Karlsson-Müller
+
+Description: Finds the taxonomy lineage of one or more query /queries in the ncbi 
+taxonomy database. In case of two or more queries, can also return last common
+taxonomic node. Uses Flask to create a webinterface.
+    
+    
+List of functions:
+    find_lineage: Finds lineage corresponding to a single query (string).
+    Find_common: Finds last common taxonomic node between queries.
+    
+Procedure:
+    1. Iterate through the queries, entered on the website, for each:
+        a. The query is looked for in the file names.dmp, its corresponding ID
+        is extracted. The scientific names and their corresponding IDs from names.dmp
+        are saved.
+        b. The script then looks for the query ID in the file nodes.dmp, finds the 
+        corresponding parent ID, looks for that one in nodes.dmp, finds its parent
+        ID etc until reaching the root of the taxonomic tree. The IDs are saved
+        in a list.
+        c. By going through the path list, the corresponding lineage is assembled
+        into a string, one ID at the time. If input parameter -s or --short is given,
+        then only nodes who are not marked as hidden by ncbi will be added to
+        lineage. Additionally saved as dictionary together with query(-ies).
+    2. If -c is set, then the resultng dictionary containing queries and lineages
+    will be used to determine the last common node. And this is also added to the output.
+    3. Output is printed in output file and/or console. The result is labelled with the query,
+    to be able to distinguish the lineage. All results get printed in the same file.
+    
+
+Usage:
+    Run in Flask environment with:
+        python Taxa_Finder_web.py
+                                    
+    Then open test-environment url.
+    
+Possible Bugs:
+    1. Requires files names.dmp and nodes.dmp in working directory.
+    2. If neither -p or -o are given, the script runs, but no output is given.
+    3. Requires Flask environment
+    
+"""
 
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
+#Link html file
 @app.route('/')
 def taxa():
 	return render_template('Taxa_v04.html')
 
+
 @app.route('/', methods=['POST'])
+#main function
 def show_lineage():
+    "Returns a string with the results from all functions/queries."
     query=request.form['query']
     query=query.split(",")
+    #if the abbreviated sequence box is ticked
     if request.form.get('short-sequence')=="1":
+        #set the flag accordingly
         short=True
     else:
         short=False
     result=""
+    #Retrieve lineage for all queries
     taxonomy=dict()
     for q in query:
         lineage=find_lineage(q.strip(" "), short)
@@ -24,12 +76,14 @@ def show_lineage():
         else:
             result+="The lineage for query <i>{}</i> is: {}</br></br>".format(q, lineage)
         taxonomy[q]=lineage
+    #If last common node is asked for
     if request.form.get('find-last-common-node')=="1":
         last_node=Find_common(taxonomy)
         if last_node==None:
             result+="</br> Cannot determine last node for a single query."
         else:
             result+="</br>The last common node between queries <i>{}</i> is: {}.".format(','.join(query), last_node)
+    #Return all the results
     return render_template('Taxa_Finder_Out_v04.html', result=result)
 
 def Find_common(taxonomy):
