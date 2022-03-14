@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<!--Everything in the style section is the CSS part, making
+a webinterface prettier -->
+<style>
+body {
+  background-color: lightblue;
+}
+h2 {
+  font-family: verdana;
+  font-size: 28px;
+  color: white;
+  text-align: center;
+}
+p{
+  font-family: verdana;
+  font-size: 18px;
+  text-align: center;
+}
+body{
+  text-align: center;
+  font-family: verdana;
+  font-size: 14px;
+}
+button{
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+input[type=text]{
+  width: 30%;
+  text-align: center;
+}
+input[type=checkbox]{
+  text-align: left
+}
+div[class=all_inputs]{
+  border: solid #008CBA;
+  border-radius: 5px;
+  display:block;
+  box-sizing: border-box;
+  background-color:#F0F8FF;
+  margin-top: 75px;
+  margin-bottom: 100px;
+  margin-right: 450px;
+  margin-left: 450px;
+}
+</style>
+<!-- html part. Explanations, inputs and hyperlinks.-->
+  <title>Taxa Finder</title>
+  <body>
+    <h2>Taxa Finder</h2>
+    <p>Taxa Finder uses the ncbi taxonomy database to find the path from your query to the root of the
+      tree of life. </br> It can process one or several queries. If several queries are input, please
+      write them on one line and seperate them by commas ",". </p>
+    <div class="all_inputs">
+    <br>
+    <form method="POST">
+    <!--Text box for query-->
+    <label for="query">Enter your query/queries:</label>
+    <input type="text" name="query"><br>
+    <!-- Checkboxes for optionals-->
+    <input type="checkbox" name="short-sequence" id="short-sequence" value="1"/>
+    <label for="short-sequence"> Short Lineage </label><br>
+    <input type="checkbox" name="find-last-common-node" id="find-last-common-node" value="1"/>
+    <label for="find-last-common-node"> Find Last Common Node</label><br><br>
+    <!--Submit button-->
+    <button type="submit">Find Taxa</button> <br><br>
+    </form>
+    </div>
+  </body>
+  <!--Additional explanation on the optionals-->
+  <p> <strong> Short Lineage: </strong> Displaying a shorter lineage instead of the full, where entries flagged as suppressed
+  in the GenBank entry lineage, are hidden. </p>
+  <p> <strong> Find Last Common Node: </strong> If more than one query is entered and this checkbox is ticked, the Taxa Finder finds you the last
+  common taxonomic node. </p>
+  <br>
+  <!-- Hyperlinks to the ncbi's taxonomy website and the Taxa Finder github-->
+  <a href="https://github.com/MirjamKarlssonMueller/BINP29/tree/master/Taxa_Finder">Find out more about Taxa Finder.</a>
+  <br><a href="https://www.ncbi.nlm.nih.gov/taxonomy">More information on the ncbi taxonomy database.</a>
+</html>
