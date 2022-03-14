@@ -36,7 +36,34 @@ optional arguments:
 ```
 
 ### Run in web interface:
-Currently only runs on a flask development server. 
+Uses Flask (Python v3.6.15, Flask v2.0.3, Werkzeug v2.0.2) to display a webinterface for Taxa Finder.
+Seeing the webinterface requires the user to install Flask on their local machine, and run it in the same directory as the Taxa_Finder_web.py file, the templates folder, names.dmp and nodes.dmp are located. Note that if Flask is used over conda, it needs to be activated first. Then the webinterface can be started with:
+
+```shell
+python Tax_v04_web.py
+```
+
 
 
 ## Example of useage
+  
+### Console
+<p>Queries can be formal and informal names, though not all entries have their informal names registered, so to be on the safe side it is recommended to use the formal name of the query.</p>
+
+<p> One Query, result printed to screen: </p>  
+```shell
+python Taxa_Finder.py -i Human -p                                
+Lineage for query Human: cellular organisms, Eukaryota, Opisthokonta, Metazoa, Eumetazoa, Bilateria, Deuterostomia, Chordata, Craniata, Vertebrata, Gnathostomata, Teleostomi, Euteleostomi, Sarcopterygii, Dipnotetrapodomorpha, Tetrapoda, Amniota, Mammalia, Theria, Eutheria, Boreoeutheria, Euarchontoglires, Primates, Haplorrhini, Simiiformes, Catarrhini, Hominoidea, Hominidae, Homininae, Homo.   
+```
+<p> Two queries, result, including last common node and abbreviated lineage, printed to screen and output file (chosen as Cat_Human_Lineage.txt).
+
+```shell
+python Taxa_Finder.py -i "Homo Sapiens" "Cat" -o "Cat_Human_Lineage.txt" -p -s -c                                                                                                        
+Lineage for query Homo Sapiens: Eukaryota, Metazoa, Chordata, Craniata, Vertebrata, Euteleostomi, Mammalia, Eutheria, Euarchontoglires, Primates, Haplorrhini, Catarrhini, Hominidae, Homo.                                                                                                                                                                             
+Lineage for query Cat: Eukaryota, Metazoa, Chordata, Craniata, Vertebrata, Euteleostomi, Mammalia, Eutheria, Laurasiatheria, Carnivora, Feliformia, Felidae, Felinae, Felis.                                                                                                                                                                                            
+Last common node between queries: Eutheria
+```
+Output file is saved in same directory as script is run. 
+  
+### Webinterface
+
