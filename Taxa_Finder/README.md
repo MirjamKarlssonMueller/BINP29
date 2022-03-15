@@ -13,7 +13,7 @@ or downloaded directly over the console with:
 
 wget https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz 
 
-Make sure to unzip the files regardless of how you download them, and then save them in the same directory as Taxa_finder.py.
+Make sure to unzip the files regardless of how you download them, and then save them in the same directory as Taxa_finder.py. Note that the files get updated regularly, the ones the examples were made with are from 07.03.22.
 
 
 ## Commands
