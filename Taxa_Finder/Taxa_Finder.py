@@ -40,6 +40,8 @@ Usage:
     
     --input INPUT, -i INPUT:        Query name, as string.
     
+    --infile INFILE, -f INFILE      csv file, containing queries.
+    
     --out [OUTFILE], -o [OUTFILE]: Lineage printed into specified outputfile.
                                     If output file not specified, but -o given, then 
                                     default file "Lineage.txt" is created.
@@ -58,6 +60,8 @@ Usage:
 Possible Bugs:
     1. Requires files names.dmp and nodes.dmp in working directory.
     2. If neither -p or -o are given, the script runs, but no output is given.
+    3. If both, an input file and a query as string, are given, then the script will only process
+       one of the two.
     
 """
 
