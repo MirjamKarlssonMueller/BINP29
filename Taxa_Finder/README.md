@@ -18,7 +18,7 @@ Make sure to unzip the files regardless of how you download them, and then save 
 
 ## Commands
 
-<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query). 
+<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query). It can be run as part of a pipeline, as one can run it with input and output file.
   
 ### Run in command line:
   
@@ -28,7 +28,8 @@ Returns lineage of query based on ncbi`s taxonomy database.
 
 optional arguments:
   -h, --help                                              show this help message and exit
-  --input INPUT [INPUT ...], -i INPUT [INPUT ...]         Query name, either single string, or severl strings seperated by space.
+  --input INPUT [INPUT ...], -i INPUT [INPUT ...]         Query name, either single string, or several strings seperated by space.
+  --infile INPUTFILE, -f INPUTFILE                        csv file containing queries.
   --out [OUT], -o [OUT]                                   Lineage printed in specified output file. Default: Lineage.txt
   --short, -s                                             The lineage returned will only include entries not flagged as hidden by ncbi.
   --print, -p                                             The lineage is printed to console.
