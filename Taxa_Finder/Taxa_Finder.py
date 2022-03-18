@@ -67,6 +67,9 @@ import argparse
 parser = argparse.ArgumentParser(prog='Taxa_Finder',
                                  usage='%(prog)s -i INPUT [-s] [-p] -[o] [OUTPUT] ',
                                  description='Returns lineage of query based on ncbi`s taxonomy database.')
+
+parser.add_argument('--infile', '-f', 
+                    help='csv file, containing queries.')
 parser.add_argument('--input', '-i', nargs="+", 
                     help='Query name, either single string, or severl strings seperated by space.')
 parser.add_argument('--out', '-o', nargs="?", default="Lineage.txt",
@@ -81,7 +84,16 @@ parser.add_argument('--common', '-c', action='store_true',
 
 args=parser.parse_args()
 
-query=args.input
+"Parsing input:"
+if args.infile:
+    with open (args.infile, 'r') as infile:
+        for line in infile:
+            query=line.strip("\n").split(",")
+elif args.input:
+    query=args.input
+else:
+    print("No query has been input.")
+    quit()
 outfile=args.out
     
     
@@ -227,7 +239,7 @@ if isinstance(query, list)==True:
         taxonomy[i]=lineage.split(",")
         output+="Lineage for query {}: {}\n\n".format(i,lineage)
 else:
-    print("Query format not correct, use strings enclosed by "" or '', queries seperated by space. ")
+    print("Query format not correct, use strings enclosed by \"\" or '', queries seperated by space. ")
     quit()
 
 #If -c is set, find last common node.
