@@ -1,7 +1,5 @@
 # Taxa Finder
 
-*In Progress*
-
 ## Necessary Files
 
 <p>Two files are necessary to run Taxa_Finder.py: nodes.dmp and names.dmp. They are part of a collection of files, taxdump, uploaded by ncbi as a part of their taxonomy database.
@@ -18,7 +16,7 @@ Make sure to unzip the files regardless of how you download them, and then save 
 
 ## Commands
 
-<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query). It can be run as part of a pipeline, as one can run it with input and output file.
+<p> The script will take a query (or several) and return the lineage from the root of the taxonomic tree to the query (in case of several, for each query). It can be run as part of a pipeline, as one can run it with input and output file. Note that when both input file and string queries are given, only one set of queries will be accepted.
   
 ### Run in command line:
   
